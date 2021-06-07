@@ -3,16 +3,16 @@ const videoGrid = document.getElementById('videoGrid')
 const myVideo = document.createElement('video')
 myVideo.muted = true
 
-var peer = new Peer()
+var peer = new Peer();
 
 const myPeer = new Peer(undefined, {
 	path: '/peerjs',
 	host: '/',
 	port: '5000',
-})
+});
 
-const peers = {}
-let myVideoStream
+const peers = {};
+let myVideoStream,recorder;
 navigator.mediaDevices
 	.getUserMedia({
 		video: true,
@@ -20,11 +20,14 @@ navigator.mediaDevices
 	})
 	.then((stream) => {
 		myVideoStream = stream
-		addVideoStream(myVideo, stream)
+		addVideoStream(myVideo, stream);
+		recorder = RecordRTC(myVideoStream, {
+			type: 'video'
+		});
 
 		socket.on('user-connected', (userId) => {
 			connectToNewUser(userId, stream)
-			alert('Somebody connected', userId)
+			alert('new user connected');
 		})
 
 		peer.on('call', (call) => {
@@ -87,6 +90,21 @@ const connectToNewUser = (userId, stream) => {
 	})
 
 	peers[userId] = call
+}
+
+const recordVideo = async() => {
+    recorder.startRecording();
+	const sleep = m => new Promise(r => setTimeout(r, m));
+    await sleep(3000);
+}
+
+const stopRecording = () => {
+	if(recorder){
+      recorder.stopRecording(() => {
+        let blob = recorder.getBlob();
+        invokeSaveAsDialog(blob);
+    });
+	}
 }
 
 const addVideoStream = (video, stream) => {
