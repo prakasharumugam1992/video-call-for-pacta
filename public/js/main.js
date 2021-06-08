@@ -16,7 +16,7 @@ const myPeer = new Peer(undefined, {
 	key:'peerjs',
 	path: '/peerjs',
 	host: 'https://video-call-21.herokuapp.com/',
-	port: process.env.PORT || 5000,
+	port: 443,
 	secure:true
 });
 
