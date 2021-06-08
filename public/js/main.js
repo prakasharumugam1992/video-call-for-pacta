@@ -1,9 +1,16 @@
 const socket = io('/')
 const videoGrid = document.getElementById('videoGrid')
 const myVideo = document.createElement('video')
-myVideo.muted = true
+myVideo.muted = true;
 
-var peer = new Peer();
+let iceServers = {
+  config: {'iceServers': [
+    { urls: "stun:stun.services.mozilla.com" },
+    { urls: "stun:stun.l.google.com:19302" }
+  ]}
+};
+
+var peer = new Peer(iceServers);
 
 const myPeer = new Peer(undefined, {
 	path: '/peerjs',
