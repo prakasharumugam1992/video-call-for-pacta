@@ -106,6 +106,18 @@ const recordVideo = async() => {
     await sleep(3000);
 }
 
+const shareScreen = () => {
+	var displayMediaStreamConstraints = {
+    video: true // or pass HINTS
+};
+
+if (navigator.mediaDevices.getDisplayMedia) {
+    navigator.mediaDevices.getDisplayMedia(myVideoStream).then(success).catch(error);
+} else {
+    navigator.getDisplayMedia(myVideoStream).then(success).catch(error);
+}
+}
+
 const stopRecording = () => {
 	if(recorder){
       recorder.stopRecording(() => {
