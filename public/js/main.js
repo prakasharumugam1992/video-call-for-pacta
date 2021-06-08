@@ -13,9 +13,11 @@ let iceServers = {
 var peer = new Peer(iceServers);
 
 const myPeer = new Peer(undefined, {
+	key:'peerjs',
 	path: '/peerjs',
-	host: '/',
-	port: '5000',
+	host: 'https://video-call-21.herokuapp.com/',
+	port: process.env.PORT || 5000,
+	secure:true
 });
 
 const peers = {};
